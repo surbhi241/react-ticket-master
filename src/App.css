@@ -1,0 +1,83 @@
+.App {
+  text-align: center;
+  background-color: #282c34;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.Heading{
+  color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  margin-left: 35px;
+  padding: 5px;
+  margin-bottom: 15px;
+}
+.listing{
+   color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  margin-left: 30px;
+}
+
+Table{
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.clearfix{
+  display: flex;
+}
+.clearfix Input{
+  width: 20%;
+  margin-left: 45.5%;
+}
+
+.priority-wrapper{
+  margin: 15px 10px;
+}
+.table-head{
+  color: rgba(247, 85, 4, 0.8);
+}
+.ticket-Form label{
+  color: #fff;
+  padding: 8px;
+}
+.form-group{
+  display: flex;
+}
+/* .table-head tr th{
+
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+} */
+.table-body-row{
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+.table-body-row td {
+  color: rgba(255, 255, 255, 0.9);
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
