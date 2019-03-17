@@ -8,8 +8,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Input, Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
 
-
-
 class App extends Component {
   constructor(){
     super()
@@ -18,7 +16,12 @@ class App extends Component {
         tickets: [],
         allTickets: [],
         priority: [],
-        high: []
+        high: [],
+        medium: [],
+        low: [],
+        sales: [],
+        technical: [],
+        hr: []
     }
     this.handleAddTicket = this.handleAddTicket.bind(this);
   }
@@ -28,10 +31,18 @@ class App extends Component {
       .then(response => {
           console.log("array:", response.data);
           this.setState(() => ({tickets: response.data, allTickets: response.data}))
+          this.setState((prevState) => ({high: prevState.tickets.filter(ticket => ticket.priority === "high" ||ticket.priority === "High")}))
+          this.setState((prevState) => ({medium: prevState.tickets.filter(ticket => ticket.priority === "Medium" )}))
+          this.setState((prevState) => ({low: prevState.tickets.filter(ticket => ticket.priority === "low" )}))
+          this.setState((prevState) => ({sales: prevState.tickets.filter(ticket => ticket. department === "technical" || ticket. department === "Technical" )}))
+          this.setState((prevState) => ({technical: prevState.tickets.filter(ticket => ticket. department === "Sales" )}))
+          this.setState((prevState) => ({hr: prevState.tickets.filter(ticket => ticket. department === "Hr" )}))
+          console.log("Priority high data:",this.state.high, this.state.medium, this.state.low);
       })
       .catch(err => {
           console.log(err);
       })
+
   }
   
   handleSearch = (e) =>{
@@ -44,11 +55,6 @@ class App extends Component {
      this.setState((prevState) => ({
       tickets: [...prevState.allTickets, ticketsData]
      }))
-  }
-
-  handleChart = () => {
-    this.setState((prevState) => ({high: prevState.tickets.filter(ticket => ticket.priority === "high")}))
-    console.log("Priority high data:",this.state.high);
   }
 
   render() {
@@ -82,23 +88,43 @@ class App extends Component {
                 </Col>
               </Row>
               <Row>
-                <Button onClick={this.handleChart}>Get chart</Button>
-                <Col md="4">
+                <Col md="4" className="chart">
                    <Chart
-                    width={'400px'}
+                    width={'340px'}
                     height={'300px'}
+                    margin={'10px'}
                     chartType="PieChart"
                     loader={<div>Loading Chart</div>}
                     data={[
                       ['Priority', 'Task'],
-                      ['High', 2],
-                      ['Medium', 2],
-                      ['Low', 2],
+                      ['High', this.state.high.length],
+                      ['Medium', this.state.medium.length],
+                      ['Low', this.state.low.length]
                     ]}
                     options={{
                       title: 'Ticket Priority %',
                     }}
                     rootProps={{ 'data-testid': '1' }}
+                  />
+                </Col>
+                <Col md="4" className="chart">
+                  <Chart
+                    width={'500px'}
+                    height={'300px'}
+                    chartType="Bar"
+                    loader={<div>Loading Chart</div>}
+                    data={[
+                      ['Department', 'Count'],
+                      ['Sales', this.state.sales.length],
+                      ['Technical', this.state.technical.length],
+                      ['Hr', this.state.hr.length],
+                    ]}
+                    options={{
+                      chart: {
+                        title: 'Tickets By Department',
+                      },
+                    }}
+                    rootProps={{ 'data-testid': '2' }}
                   />
                 </Col>
               </Row>
