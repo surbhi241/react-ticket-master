@@ -25,6 +25,7 @@ class PieChart extends React.Component {
                   ]}
                   options={{
                     title: 'My Daily Activities',
+                    padding: '10px'
                   }}
                   rootProps={{ 'data-testid': '1' }}
                 />

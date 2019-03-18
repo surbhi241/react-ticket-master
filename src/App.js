@@ -1,6 +1,10 @@
 //day -35 implementation of ticket master the react app.
 import React, { Component } from 'react';
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "bootstrap-css-only/css/bootstrap.min.css";
+import "mdbreact/dist/css/mdb.css";
 import axios from 'axios';
+import { MDBProgress } from 'mdbreact';
 import Chart from 'react-google-charts';
 import TicketsTable from './TicketsTable.js';
 import TicketForm from './TicketForm.js';
@@ -21,7 +25,8 @@ class App extends Component {
         low: [],
         sales: [],
         technical: [],
-        hr: []
+        hr: [],
+        progress: []
     }
     this.handleAddTicket = this.handleAddTicket.bind(this);
   }
@@ -31,13 +36,14 @@ class App extends Component {
       .then(response => {
           console.log("array:", response.data);
           this.setState(() => ({tickets: response.data, allTickets: response.data}))
-          this.setState((prevState) => ({high: prevState.tickets.filter(ticket => ticket.priority === "high" ||ticket.priority === "High")}))
+          this.setState((prevState) => ({high: prevState.tickets.filter(ticket => ticket.priority === "high"||ticket.priority === "High")}))
           this.setState((prevState) => ({medium: prevState.tickets.filter(ticket => ticket.priority === "Medium" )}))
           this.setState((prevState) => ({low: prevState.tickets.filter(ticket => ticket.priority === "low" )}))
-          this.setState((prevState) => ({sales: prevState.tickets.filter(ticket => ticket. department === "technical" || ticket. department === "Technical" )}))
-          this.setState((prevState) => ({technical: prevState.tickets.filter(ticket => ticket. department === "Sales" )}))
-          this.setState((prevState) => ({hr: prevState.tickets.filter(ticket => ticket. department === "Hr" )}))
-          console.log("Priority high data:",this.state.high, this.state.medium, this.state.low);
+          this.setState((prevState) => ({sales: prevState.tickets.filter(ticket => ticket.department === "technical"||ticket.department === "Technical" )}))
+          this.setState((prevState) => ({technical: prevState.tickets.filter(ticket => ticket.department === "Sales" )}))
+          this.setState((prevState) => ({hr: prevState.tickets.filter(ticket => ticket.department === "Hr")}))
+          this.setState((prevState) => ({progress: prevState.tickets.filter(ticket => ticket.status === "completed")}))
+          console.log("Priority high data:",this.state.high, this.state.medium, this.state.low, this.state.progress);
       })
       .catch(err => {
           console.log(err);
@@ -57,7 +63,13 @@ class App extends Component {
      }))
   }
 
+  handleProgressBar = (progress) => {
+    this.setState((prevState) => ({progress: prevState.tickets.filter(ticket => ticket.status === "completed")}))
+  }
+
   render() {
+    const progressPercentage = this.state.progress.length/this.state.tickets.length * 100
+    console.log(progressPercentage, this.state.progress.length , this.state.tickets.length);
     return (
       <div className="App">
         <Container>
@@ -72,10 +84,10 @@ class App extends Component {
                 </Col>
                 <Col md="4">
                     <ButtonGroup>
-                      <Button>All</Button>
-                      <Button>High</Button>
-                      <Button>Medium</Button>
-                      <Button>Low</Button>
+                      <Button color="blue-grey">All</Button>
+                      <Button color="blue-grey">High</Button>
+                      <Button color="blue-grey">Medium</Button>
+                      <Button color="blue-grey">Low</Button>
                     </ButtonGroup>
                 </Col>
               </Row>
@@ -85,6 +97,11 @@ class App extends Component {
                 </Col>
                 <Col md="4">
                     <TicketForm {...this.state.tickets} handleAddTicket={this.handleAddTicket}/>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="8">
+                  <MDBProgress color="success" value={progressPercentage}> {progressPercentage}% </MDBProgress>
                 </Col>
               </Row>
               <Row>
